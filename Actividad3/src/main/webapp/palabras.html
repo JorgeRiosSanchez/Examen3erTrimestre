@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+Palabra 1 <input type="text" id="palabra1" name="palabra1"/><br>
+Palabra 2 <input type="text" id="palabra2" name="palabra2"/><br>
+Palabra 3 <input type="text" id="palabra3" name="palabra3"/><br>
+<button id="btnEnviar">Enviar</button>
+
+<p id="resultado"></p>
+
+<script type="text/javascript">
+    var btnEnviar = document.getElementById("btnEnviar");
+    var inputPalabra1 = document.getElementById("palabra1");
+    var inputPalabra2 = document.getElementById("palabra2");
+    var inputPalabra3 = document.getElementById("palabra3");
+    var pResultado = document.getElementById("resultado");
+
+    btnSubir.addEventListener("click",function(e){
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","palabras",true);
+        xhr.onreadystatechange = function(){
+            console.log("readyState = " +  xhr.readyState);
+            if ((xhr.readyState == 4) && (xhr.status == 200)){
+                let jsonRecibido = JSON.parse(xhr.responseText);
+                if (jsonRecibido.status == "ok") {
+                    pResultado.innerHTML = "La concatenación de " +
+                                            jsonRecibido.palabraEnviada1 + ", " +
+                                            jsonRecibido.palabraEnviada2 + " y " +
+                                            jsonRecibido.palabraEnviada3 + " es " +
+                                            jsonRecibido.cadenaResultado;
+                } else {
+                    pResultado.innerHTML = "Ha surgido un problema, la respuesta recibida del servidor no es la correcta";
+                }
+            }
+        }
+        xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+        xhr.send(JSON.stringify({a:inputA.value,b:inputB.value}));
+    })
+</script>
+</body>
+</html>
